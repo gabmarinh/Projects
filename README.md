@@ -1,42 +1,44 @@
-Case Study: Cyclistic Bike-Share Analysis
-Author: Gabriel Marín Huerta Role: Junior Data Analyst Date: November 24, 2025 Tools: R (RStudio), Tableau
+# 🚴‍♂️ Case Study: Cyclistic Bike-Share Analysis
+### Optimizing Marketing Strategy Through Data Insights
 
-Executive Summary
-Cyclistic, a bike-share company in Chicago, seeks to maximize profitability by converting casual riders into annual members. My analysis of historical trip data reveals that Casual riders use bikes primarily for leisure on weekends, while Annual Members use them for commuting during the week. Based on these behaviors, I recommend introducing a "Weekend Membership" tier and launching seasonal summer campaigns to bridge the gap between user segments.
+**Author:** Gabriel Marín Huerta
+**Role:** Junior Data Analyst (Marketing Team)
+**Date:** November 24, 2025
+**Tools:** R (RStudio), Tableau
 
-1. Ask Phase
-Business Task
+---
+
+## 📑 Executive Summary
+Cyclistic, a bike-share company in Chicago, seeks to maximize profitability by converting casual riders into annual members. My analysis of historical trip data reveals that **Casual riders use bikes primarily for leisure on weekends**, while **Annual Members use them for commuting during the week**. Based on these behaviors, I recommend introducing a "Weekend Membership" tier and launching seasonal summer campaigns to bridge the gap between user segments.
+
+---
+
+## 1. ❓ Ask Phase
+### Business Task
 The marketing director, Lily Moreno, has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. The finance team has concluded that annual members are much more profitable than casual riders.
 
+### Key Question
+> **"How do annual members and casual riders use Cyclistic bikes differently?"**
 
-Key Question
+### Stakeholders
+* **Lily Moreno:** Director of Marketing.
+* **Cyclistic Executive Team:** The decision-makers who must approve the recommended program.
 
-"How do annual members and casual riders use Cyclistic bikes differently?" 
+---
 
-
-Stakeholders
-
-Lily Moreno: Director of Marketing.
-
-
-Cyclistic Executive Team: The decision-makers who must approve the recommended program.
-
-2. Prepare Phase
-Data Source
+## 2. 💻 Prepare Phase
+### Data Source
 I used Cyclistic’s historical trip data (public data provided by Motivate International Inc.) for the previous 12 months.
+* **Privacy:** The data has been anonymized. No personally identifiable information (PII) such as credit card numbers was used.
+* **Organization:** The data is organized in 12 CSV files (one per month) containing ride details like `ride_id`, `rideable_type`, `started_at`, `ended_at`, `start_station_name`, and `member_casual`.
 
+---
 
-Privacy: The data has been anonymized. No personally identifiable information (PII) such as credit card numbers was used.
+## 3. 🛠 Process Phase
+To handle the large volume of data (millions of rows), I used **R** for data cleaning and manipulation instead of spreadsheets.
 
-Organization: The data is organized in 12 CSV files (one per month) containing ride details like ride_id, rideable_type, started_at, ended_at, start_station_name, and member_casual.
-
-3. Process Phase
-To handle the large volume of data (millions of rows), I used R for data cleaning and manipulation instead of spreadsheets.
-
-
-Code Snippet: Setting up the environment
-R
-
+### Code Snippet: Setting up the environment
+```r
 # Loading key libraries for data analysis
 library(tidyverse)  # For data wrangling
 library(lubridate)  # For date attributes
@@ -45,6 +47,7 @@ library(ggplot2)    # For visualization
 # Importing data (Example for Q1)
 q1_2019 <- read_csv("Divvy_Trips_2019_Q1.csv")
 q1_2020 <- read_csv("Divvy_Trips_2020_Q1.csv")
+```
 Data Cleaning Steps
 Consolidation: Merged 12 months of data into a single dataframe.
 
@@ -59,16 +62,13 @@ Data Quality Check:
 Removed trips with ride_length < 0 (system errors or maintenance).
 
 Removed trips to/from "HQ QR" (testing stations).
-
-R
-
 # Removing "bad" data
 all_trips_v2 <- all_trips %>% 
   filter(ride_length > 0) %>% 
   filter(start_station_name != "HQ QR")
-4. Analyze Phase
+  
+4. 📊 Analyze Phase
 I conducted a descriptive analysis to find trends and relationships between the two user types.
-
 
 Key Findings
 Ride Duration: Casual riders ride for significantly longer durations than members.
@@ -86,23 +86,19 @@ Casuals: Usage peaks dramatically on Saturdays and Sundays. This suggests leisur
 Seasonality: Both groups ride more in summer, but Casual ridership drops near-zero in winter, while Members continue to ride (likely for necessary commuting).
 
 Summary Statistics Calculation
-R
-
 # Comparing members and casual users
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = mean)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = median)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = max)
-5. Share Phase (Visualizations)
-Note: In a live portfolio, these descriptions would be accompanied by the actual plots generated in R or Tableau.
+
+5. 📉 Share Phase (Visualizations)
+Note: The visualizations below were generated using ggplot2 in R.
 
 Visualization 1: Number of Rides by Day of Week
 The bar chart shows a clear crossover. Members dominate the weekdays, but Casual riders overtake them on weekends. This confirms the "Commuter vs. Tourist/Leisure" hypothesis.
 
 Visualization 2: Average Trip Duration
 Casual riders consistently have a higher average trip duration throughout the week. Even on Mondays, a casual rider keeps the bike longer than a member.
-
-R
-
 # R Code for Visualization
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
@@ -112,9 +108,9 @@ all_trips_v2 %>%
   ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +
   geom_col(position = "dodge") +
   labs(title = "Total Rides by User Type and Day of Week")
-6. Act Phase (Recommendations)
-Based on the analysis that Casual riders are "Weekend Leisure Users", I propose the following strategies to the executive team:
 
+6. 🚀 Act Phase (Recommendations)
+Based on the analysis that Casual riders are "Weekend Leisure Users", I propose the following strategies to the executive team:
 
 1. The "Weekender" Membership
 Create a new membership tier specifically for weekends (Fri-Sun).
