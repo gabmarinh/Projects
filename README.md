@@ -57,9 +57,11 @@ Data Cleaning Steps
    Removed trips with ride_length < 0 (system errors or maintenance).
    Removed trips to/from "HQ QR" (testing stations).
 Removing "bad" data
+```r
 all_trips_v2 <- all_trips %>% 
   filter(ride_length > 0) %>% 
   filter(start_station_name != "HQ QR")
+```
 ## 4. 📊 Analyze Phase
 I conducted a descriptive analysis to find trends and relationships between the two user types.
 
@@ -73,10 +75,12 @@ Key Findings
 3. Seasonality: Both groups ride more in summer, but Casual ridership drops near-zero in winter, while Members continue to ride (likely for necessary commuting).
 
 Summary Statistics Calculation
-Comparing members and casual users
+```r
+#Comparing members and casual users
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = mean)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = median)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = max)
+```
 
 ## 5. 📉 Share Phase (Visualizations)
 Note: The visualizations below were generated using ggplot2 in R.
@@ -88,6 +92,7 @@ Visualization 2: Average Trip Duration
 Casual riders consistently have a higher average trip duration throughout the week. Even on Mondays, a casual rider keeps the bike longer than a member.
 
 R Code for Visualization
+```r
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
   group_by(member_casual, weekday) %>% 
@@ -96,6 +101,7 @@ all_trips_v2 %>%
   ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +
   geom_col(position = "dodge") +
   labs(title = "Total Rides by User Type and Day of Week")
+```
 
 ## 6. 🚀 Act Phase (Recommendations)
 Based on the analysis that Casual riders are "Weekend Leisure Users", I propose the following strategies to the executive team:
