@@ -73,12 +73,12 @@ Key Findings
 3. Seasonality: Both groups ride more in summer, but Casual ridership drops near-zero in winter, while Members continue to ride (likely for necessary commuting).
 
 Summary Statistics Calculation
-# Comparing members and casual users
+Comparing members and casual users
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = mean)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = median)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = max)
 
-5. 📉 Share Phase (Visualizations)
+## 5. 📉 Share Phase (Visualizations)
 Note: The visualizations below were generated using ggplot2 in R.
 
 Visualization 1: Number of Rides by Day of Week
@@ -97,7 +97,7 @@ all_trips_v2 %>%
   geom_col(position = "dodge") +
   labs(title = "Total Rides by User Type and Day of Week")
 
-6. 🚀 Act Phase (Recommendations)
+## 6. 🚀 Act Phase (Recommendations)
 Based on the analysis that Casual riders are "Weekend Leisure Users", I propose the following strategies to the executive team:
 
 . The "Weekender" Membership
